@@ -16,7 +16,7 @@ const statuses = [
   { label: "Canceled", icon: <XCircle className="w-4 h-4 text-gray-500" /> },
 ];
 
-function StatusDropdown({ value, onChange, open, setOpen }) {
+const StatusDropdown = React.forwardRef(({ value, onChange, open, setOpen }, ref) => {
   const [search, setSearch] = useState("");
 
   const filtered = statuses.filter((s) =>
@@ -24,7 +24,7 @@ function StatusDropdown({ value, onChange, open, setOpen }) {
   );
 
   return (
-    <div className="relative inline-block text-left">
+    <div ref={ref} className="relative inline-block text-left">
       {/* Trigger Button */}
       <button
         type="button"
@@ -86,6 +86,6 @@ function StatusDropdown({ value, onChange, open, setOpen }) {
       )}
     </div>
   );
-}
+});
 
 export default StatusDropdown;

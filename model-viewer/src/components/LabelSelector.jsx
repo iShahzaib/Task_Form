@@ -8,7 +8,7 @@ const allLabels = [
   { id: "research", name: "Research", color: "bg-yellow-100 text-yellow-800" },
 ];
 
-function LabelSelector({ selected = [], onChange, open, setOpen }) {
+const LabelSelector = React.forwardRef(({ selected = [], onChange, open, setOpen }, ref) => {
   const toggleLabel = (labelId) => {
     if (selected.includes(labelId)) {
       onChange(selected.filter((id) => id !== labelId));
@@ -18,7 +18,7 @@ function LabelSelector({ selected = [], onChange, open, setOpen }) {
   };
 
   return (
-    <div className="relative inline-block text-left">
+    <div ref={ref} className="relative inline-block text-left">
       {/* Trigger button */}
       <button
         type="button"
@@ -69,6 +69,6 @@ function LabelSelector({ selected = [], onChange, open, setOpen }) {
       )}
     </div>
   );
-}
+});
 
 export default LabelSelector;

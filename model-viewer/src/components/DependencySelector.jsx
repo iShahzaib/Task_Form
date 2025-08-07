@@ -8,7 +8,7 @@ const allTasks = [
   { id: "T-104", title: "Setup database schema" },
 ];
 
-function DependencySelector({ selected = [], onChange, open, setOpen }) {
+const DependencySelector = React.forwardRef(({ selected = [], onChange, open, setOpen }, ref) => {
   const [search, setSearch] = useState("");
 
   const toggleDependency = (taskId) => {
@@ -24,7 +24,7 @@ function DependencySelector({ selected = [], onChange, open, setOpen }) {
   );
 
   return (
-    <div className="relative inline-block text-left">
+    <div ref={ref} className="relative inline-block text-left">
       {/* Trigger button */}
       <button
         onClick={() => setOpen(open ? null : "dependencies")}
@@ -83,6 +83,6 @@ function DependencySelector({ selected = [], onChange, open, setOpen }) {
       )}
     </div>
   );
-}
+});
 
 export default DependencySelector;

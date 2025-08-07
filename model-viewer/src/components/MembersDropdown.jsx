@@ -22,7 +22,7 @@ const allUsers = [
   },
 ];
 
-function MembersDropdown({ selectedMembers, onChange, open, setOpen }) {
+const MembersDropdown = React.forwardRef(({ selectedMembers, onChange, open, setOpen }, ref) => {
   const toggleMember = (memberId) => {
     if (selectedMembers.includes(memberId)) {
       onChange(selectedMembers.filter((id) => id !== memberId));
@@ -32,7 +32,7 @@ function MembersDropdown({ selectedMembers, onChange, open, setOpen }) {
   };
 
   return (
-    <div className="relative inline-block text-left">
+    <div ref={ref} className="relative inline-block text-left">
       {/* Trigger Button */}
       <button
         type="button"
@@ -72,6 +72,6 @@ function MembersDropdown({ selectedMembers, onChange, open, setOpen }) {
       )}
     </div>
   );
-}
+});
 
 export default MembersDropdown;

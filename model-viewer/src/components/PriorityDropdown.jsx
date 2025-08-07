@@ -9,7 +9,7 @@ const priorities = [
   { label: "Low", icon: <BarChart3 className="w-4 h-4 text-green-500" /> },
 ];
 
-function PriorityDropdown({ value, onChange, open, setOpen }) {
+const PriorityDropdown = React.forwardRef(({ value, onChange, open, setOpen }, ref) => {
   const [search, setSearch] = useState("");
 
   const filtered = priorities.filter((p) =>
@@ -17,7 +17,7 @@ function PriorityDropdown({ value, onChange, open, setOpen }) {
   );
 
   return (
-    <div className="relative inline-block text-left">
+    <div ref={ref} className="relative inline-block text-left">
       {/* Trigger Button */}
       <button
         type="button"
@@ -79,6 +79,6 @@ function PriorityDropdown({ value, onChange, open, setOpen }) {
       )}
     </div>
   );
-}
+});
 
 export default PriorityDropdown;

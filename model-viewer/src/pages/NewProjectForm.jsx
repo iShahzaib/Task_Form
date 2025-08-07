@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Calendar, CalendarDays } from "lucide-react";
-import {format} from "date-fns";
+import { format } from "date-fns";
 import PriorityDropdown from "../components/PriorityDropdown";
 import StatusDropdown from "../components/StatusDropdown";
 import MembersDropdown from "../components/MembersDropdown";
@@ -14,6 +14,7 @@ const NewProjectForm = () => {
   const [showMilestoneModal, setShowMilestoneModal] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const formRef = useRef();
+  const dropdownRef = useRef(null); // shared ref for currently open dropdown
 
   const [project, setProject] = useState({
     name: "",
@@ -42,9 +43,8 @@ const NewProjectForm = () => {
   // Close only dropdowns on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (formRef.current && !formRef.current.contains(e.target)) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setOpenDropdown(null);
-        // ❌ No longer closing MilestoneModal here
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -90,6 +90,7 @@ const NewProjectForm = () => {
             }}
             open={openDropdown === "status"}
             setOpen={(v) => setOpenDropdown(v)}
+            ref={openDropdown === "status" ? dropdownRef : null}
           />
 
           {/* Priority */}
@@ -103,6 +104,7 @@ const NewProjectForm = () => {
             setOpen={() =>
               setOpenDropdown(openDropdown === "priority" ? null : "priority")
             }
+            ref={openDropdown === "priority" ? dropdownRef : null}
           />
 
           {/* Assignee (Fixed pill) */}
@@ -121,6 +123,7 @@ const NewProjectForm = () => {
             onChange={(members) => setProject({ ...project, members })}
             open={openDropdown === "members"}
             setOpen={setOpenDropdown}
+            ref={openDropdown === "members" ? dropdownRef : null}
           />
 
           {/* Start Date */}
@@ -131,6 +134,7 @@ const NewProjectForm = () => {
             onChange={(date) => setProject({ ...project, startDate: date })}
             open={openDropdown === "start"}
             setOpen={setOpenDropdown}
+            ref={openDropdown === "start" ? dropdownRef : null}
           />
 
           {/* Target Date */}
@@ -141,6 +145,7 @@ const NewProjectForm = () => {
             onChange={(date) => setProject({ ...project, targetDate: date })}
             open={openDropdown === "target"}
             setOpen={setOpenDropdown}
+            ref={openDropdown === "target" ? dropdownRef : null}
           />
 
           {/* Labels & Dependencies */}
@@ -149,6 +154,7 @@ const NewProjectForm = () => {
             onChange={(labels) => setProject({ ...project, labels })}
             open={openDropdown === "labels"}
             setOpen={setOpenDropdown}
+            ref={openDropdown === "labels" ? dropdownRef : null}
           />
 
           <DependencySelector
@@ -156,6 +162,7 @@ const NewProjectForm = () => {
             onChange={(deps) => setProject({ ...project, dependencies: deps })}
             open={openDropdown === "dependencies"}
             setOpen={setOpenDropdown}
+            ref={openDropdown === "dependencies" ? dropdownRef : null}
           />
         </div>
         {/* Description */}
