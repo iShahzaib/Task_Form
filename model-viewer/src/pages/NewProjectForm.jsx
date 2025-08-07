@@ -1,0 +1,232 @@
+import React, { useState, useRef, useEffect } from "react";
+import { Calendar, CalendarDays } from "lucide-react";
+import {format} from "date-fns";
+import PriorityDropdown from "../components/PriorityDropdown";
+import StatusDropdown from "../components/StatusDropdown";
+import MembersDropdown from "../components/MembersDropdown";
+import DatePicker from "../components/DatePicker";
+import LabelSelector from "../components/LabelSelector";
+import DependencySelector from "../components/DependencySelector";
+import MilestoneModal from "../components/MilestoneModal";
+
+const NewProjectForm = () => {
+  const [milestones, setMilestones] = useState([]);
+  const [showMilestoneModal, setShowMilestoneModal] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const formRef = useRef();
+
+  const [project, setProject] = useState({
+    name: "",
+    summary: "",
+    description: "",
+    status: "Backlog",
+    priority: "No priority",
+    assignee: "romi.indan",
+    members: [],
+    startDate: new Date(),
+    targetDate: new Date(),
+    labels: "",
+    dependencies: [],
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProject((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Creating project:", project);
+  };
+
+  // Close only dropdowns on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (formRef.current && !formRef.current.contains(e.target)) {
+        setOpenDropdown(null);
+        // ❌ No longer closing MilestoneModal here
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <>
+      <form
+        onSubmit={handleSubmit}
+        ref={formRef}
+        className="bg-white shadow-lg rounded-md max-w-3xl mx-auto p-6 space-y-4"
+      >
+        {/* Header */}
+        <div className="text-sm text-gray-500">STU &rsaquo; New project</div>
+        {/* Project Name */}
+        <input
+          type="text"
+          name="name"
+          value={project.name}
+          onChange={handleChange}
+          placeholder="Project name"
+          className="w-full bg-white text-2xl font-semibold focus:outline-none border-none placeholder-gray-400"
+          required
+        />
+        {/* Summary */}
+        <input
+          type="text"
+          name="summary"
+          value={project.summary}
+          onChange={handleChange}
+          placeholder="Add a short summary..."
+          className="w-full bg-white text-gray-500 focus:outline-none border-none placeholder-gray-400"
+        />
+        {/* Tag Buttons / Pills */}
+        <div className="flex flex-wrap gap-2 mt-4">
+          {/* Status */}
+          <StatusDropdown
+            value={project.status}
+            onChange={(val) => {
+              setProject({ ...project, status: val });
+              setOpenDropdown(null);
+            }}
+            open={openDropdown === "status"}
+            setOpen={(v) => setOpenDropdown(v)}
+          />
+
+          {/* Priority */}
+          <PriorityDropdown
+            value={project.priority}
+            onChange={(val) => {
+              setProject({ ...project, priority: val });
+              setOpenDropdown(null);
+            }}
+            open={openDropdown === "priority"}
+            setOpen={() =>
+              setOpenDropdown(openDropdown === "priority" ? null : "priority")
+            }
+          />
+
+          {/* Assignee (Fixed pill) */}
+          <div className="px-3 py-1 rounded-full border text-sm bg-gray-100 flex items-center gap-2">
+            <img
+              src="https://i.pravatar.cc/24?u=romi"
+              alt="user"
+              className="w-5 h-5 rounded-full"
+            />
+            <span>{project.assignee}</span>
+          </div>
+
+          {/* Members */}
+          <MembersDropdown
+            selectedMembers={project.members}
+            onChange={(members) => setProject({ ...project, members })}
+            open={openDropdown === "members"}
+            setOpen={setOpenDropdown}
+          />
+
+          {/* Start Date */}
+          <DatePicker
+            label="Start"
+            icon={Calendar}
+            value={project.startDate}
+            onChange={(date) => setProject({ ...project, startDate: date })}
+            open={openDropdown === "start"}
+            setOpen={setOpenDropdown}
+          />
+
+          {/* Target Date */}
+          <DatePicker
+            label="Target"
+            icon={CalendarDays}
+            value={project.targetDate}
+            onChange={(date) => setProject({ ...project, targetDate: date })}
+            open={openDropdown === "target"}
+            setOpen={setOpenDropdown}
+          />
+
+          {/* Labels & Dependencies */}
+          <LabelSelector
+            selected={project.labels}
+            onChange={(labels) => setProject({ ...project, labels })}
+            open={openDropdown === "labels"}
+            setOpen={setOpenDropdown}
+          />
+
+          <DependencySelector
+            selected={project.dependencies}
+            onChange={(deps) => setProject({ ...project, dependencies: deps })}
+            open={openDropdown === "dependencies"}
+            setOpen={setOpenDropdown}
+          />
+        </div>
+        {/* Description */}
+        <textarea
+          name="description"
+          value={project.description}
+          onChange={handleChange}
+          rows="12"
+          placeholder="Write a description, a project brief, or collect ideas..."
+          className="w-full bg-white border border-gray-200 rounded text-sm focus:outline-none border-none"
+        />
+        {/* Milestones header */}
+        <div className="flex justify-between items-center bg-gray-100 px-3 py-1 rounded">
+          <div className="text-sm text-gray-700 font-medium">Milestones</div>
+          <button
+            type="button"
+            onClick={() => {
+              setShowMilestoneModal(true);
+              setOpenDropdown(null);
+            }}
+            className="text-lg p-0 text-gray-600 hover:text-black"
+            title="Add milestone"
+          >
+            +
+          </button>
+        </div>
+
+        {/* Milestone list */}
+        {milestones.length > 0 && (
+          <ul className="list-disc pl-6 text-sm text-gray-700 mt-2 space-y-1">
+            {milestones.map((m, idx) => (
+              <li key={idx}>
+                <div className="font-medium">{m.name}</div>
+                <div className="text-gray-500 text-sm">{m.description}</div>
+                <div className="text-gray-400 text-xs italic">
+                  Target: {format(new Date(m.targetDate), "dd MMM yyyy")}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {/* Footer buttons */}
+        <div className="flex justify-end gap-3">
+          <button
+            type="button"
+            className="px-4 py-2 border rounded hover:bg-gray-100"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+          >
+            Create project
+          </button>
+        </div>
+      </form>
+
+      {/* Milestone modal */}
+      {showMilestoneModal && (
+        <MilestoneModal
+          onClose={() => setShowMilestoneModal(false)}
+          onAdd={(milestone) => {
+            setMilestones([...milestones, milestone]);
+            setShowMilestoneModal(false);
+          }}
+        />
+      )}
+    </>
+  );
+};
+
+export default NewProjectForm;
