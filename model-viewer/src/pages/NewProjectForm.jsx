@@ -24,8 +24,8 @@ const NewProjectForm = () => {
     priority: "No priority",
     assignee: "romi.indan",
     members: [],
-    startDate: new Date(),
-    targetDate: new Date(),
+    startDate: '',
+    targetDate: '',
     labels: "",
     dependencies: [],
   });
@@ -175,7 +175,7 @@ const NewProjectForm = () => {
           className="w-full bg-white border border-gray-200 rounded text-sm focus:outline-none border-none"
         />
         {/* Milestones header */}
-        <div className="flex justify-between items-center bg-gray-100 px-3 py-1 rounded">
+        <div className="flex justify-between items-center bg-gray-100 px-3 py-1.5 rounded">
           <div className="text-sm text-gray-700 font-medium">Milestones</div>
           <button
             type="button"
@@ -192,17 +192,31 @@ const NewProjectForm = () => {
 
         {/* Milestone list */}
         {milestones.length > 0 && (
-          <ul className="list-disc pl-6 text-sm text-gray-700 mt-2 space-y-1">
+          <div className="mt-3 space-y-2">
             {milestones.map((m, idx) => (
-              <li key={idx}>
-                <div className="font-medium">{m.name}</div>
-                <div className="text-gray-500 text-sm">{m.description}</div>
-                <div className="text-gray-400 text-xs italic">
-                  Target: {format(new Date(m.targetDate), "dd MMM yyyy")}
+              <div
+                key={idx}
+                className="flex justify-between items-center p-2 bg-gray-50 border border-gray-200 rounded-md shadow-sm hover:shadow-md transition-all"
+              >
+                {/* Left: Name + Description */}
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="text-sm font-semibold text-gray-800 whitespace-nowrap">
+                    {m.name}
+                  </span>
+                  {m.description && (
+                    <span className="text-gray-500 text-sm truncate">
+                      — {m.description}
+                    </span>
+                  )}
                 </div>
-              </li>
+
+                {/* Right: Target Date */}
+                <div className="text-xs text-gray-400 whitespace-nowrap pl-4">
+                  {format(new Date(m.targetDate), "dd MMM yyyy")}
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
 
         {/* Footer buttons */}
