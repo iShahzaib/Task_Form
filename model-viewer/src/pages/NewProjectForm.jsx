@@ -9,12 +9,12 @@ import LabelSelector from "../components/LabelSelector";
 import DependencySelector from "../components/DependencySelector";
 import MilestoneModal from "../components/MilestoneModal";
 
-const NewProjectForm = () => {
+const NewProjectForm = ({ onSave, onClose }) => {
   const [milestones, setMilestones] = useState([]);
   const [showMilestoneModal, setShowMilestoneModal] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const formRef = useRef();
-  const dropdownRef = useRef(null); // shared ref for currently open dropdown
+  const dropdownRef = useRef(null);
 
   const [project, setProject] = useState({
     name: "",
@@ -24,8 +24,8 @@ const NewProjectForm = () => {
     priority: "No priority",
     assignee: "romi.indan",
     members: [],
-    startDate: '',
-    targetDate: '',
+    startDate: null,
+    targetDate: null,
     labels: "",
     dependencies: [],
   });
@@ -37,10 +37,10 @@ const NewProjectForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Creating project:", project);
+    const payload = { ...project, milestones };
+    onSave && onSave(payload);
   };
 
-  // Close only dropdowns on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -52,14 +52,24 @@ const NewProjectForm = () => {
   }, []);
 
   return (
-    <>
+    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
       <form
         onSubmit={handleSubmit}
         ref={formRef}
-        className="bg-white shadow-lg rounded-md max-w-3xl mx-auto p-6 space-y-4"
+        className="bg-white shadow-lg rounded-md w-full max-w-4xl p-6 space-y-4 overflow-y-auto max-h-[90vh]"
       >
         {/* Header */}
-        <div className="text-sm text-gray-500">STU &rsaquo; New project</div>
+        <div className="flex justify-between items-center">
+          <div className="text-sm text-gray-500">STU &rsaquo; New project</div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-gray-500 hover:text-black text-xl"
+          >
+            &times;
+          </button>
+        </div>
+
         {/* Project Name */}
         <input
           type="text"
@@ -67,9 +77,10 @@ const NewProjectForm = () => {
           value={project.name}
           onChange={handleChange}
           placeholder="Project name"
-          className="w-full bg-white text-2xl font-semibold focus:outline-none border-none placeholder-gray-400"
+          className="w-full bg-white text-2xl font-semibold focus:outline-none placeholder-gray-400"
           required
         />
+
         {/* Summary */}
         <input
           type="text"
@@ -79,6 +90,7 @@ const NewProjectForm = () => {
           placeholder="Add a short summary..."
           className="w-full bg-white text-gray-500 focus:outline-none border-none placeholder-gray-400"
         />
+
         {/* Tag Buttons / Pills */}
         <div className="flex flex-wrap gap-2 mt-4">
           {/* Status */}
@@ -89,7 +101,7 @@ const NewProjectForm = () => {
               setOpenDropdown(null);
             }}
             open={openDropdown === "status"}
-            setOpen={(v) => setOpenDropdown(v)}
+            setOpen={setOpenDropdown}
             ref={openDropdown === "status" ? dropdownRef : null}
           />
 
@@ -165,15 +177,17 @@ const NewProjectForm = () => {
             ref={openDropdown === "dependencies" ? dropdownRef : null}
           />
         </div>
+
         {/* Description */}
         <textarea
           name="description"
           value={project.description}
           onChange={handleChange}
-          rows="12"
+          rows="10"
           placeholder="Write a description, a project brief, or collect ideas..."
           className="w-full bg-white border border-gray-200 rounded text-sm focus:outline-none border-none"
         />
+
         {/* Milestones header */}
         <div className="flex justify-between items-center bg-gray-100 px-3 py-1.5 rounded">
           <div className="text-sm text-gray-700 font-medium">Milestones</div>
@@ -220,9 +234,10 @@ const NewProjectForm = () => {
         )}
 
         {/* Footer buttons */}
-        <div className="flex justify-end gap-3">
+        <div className="flex justify-end gap-3 pt-4">
           <button
             type="button"
+            onClick={onClose}
             className="px-4 py-2 border rounded hover:bg-gray-100"
           >
             Cancel
@@ -246,7 +261,7 @@ const NewProjectForm = () => {
           }}
         />
       )}
-    </>
+    </div>
   );
 };
 
