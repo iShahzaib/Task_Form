@@ -197,7 +197,7 @@ const NewProjectForm = ({ onSave, onClose }) => {
               setShowMilestoneModal(true);
               setOpenDropdown(null);
             }}
-            className="text-lg p-0 text-gray-600 hover:text-black"
+            className="text-lg p-0 text-gray-600 hover:text-black hover:text-black-200 border-none rounded-full focus:outline-none focus:ring-0 active:outline-none active:ring-0 active:border-none"
             title="Add milestone"
           >
             +
