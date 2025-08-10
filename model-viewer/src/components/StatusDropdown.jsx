@@ -36,7 +36,12 @@ const StatusDropdown = React.forwardRef(
         <button
           type="button"
           onClick={() => setOpen(open ? null : "status")}
-          className="inline-flex items-center gap-2 px-3 py-1 border rounded-full text-sm bg-white hover:bg-gray-50 shadow-sm"
+          className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-sm shadow-sm
+    border border-gray-300
+    ${open ? "bg-gray-200" : "hover:bg-gray-50"}
+    focus:outline-none focus:ring-0 focus:border-gray-300
+    active:outline-none active:ring-0 active:border-gray-300
+    hover:border-gray-300`}
         >
           <div className="flex items-center gap-2">
             {statuses.find((s) => s.label === value)?.icon || ""}
@@ -54,7 +59,7 @@ const StatusDropdown = React.forwardRef(
                 placeholder="Change status..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full bg-white p-1 px-2 text-sm border rounded text-gray-700"
+                className="w-full p-1 px-2 text-sm border rounded text-gray-700"
               />
               <kbd className="mx-2 bg-gray-100 text-gray-600 px-1 py-0.5 rounded text-[10px]">
                 P
@@ -77,9 +82,8 @@ const StatusDropdown = React.forwardRef(
                     setSearch("");
                     setOpen(null); // close dropdown
                   }}
-                  className={`flex justify-between items-center w-full bg-white px-3 py-2 text-sm text-left rounded hover:bg-gray-100 ${
-                    value === status.label ? "bg-gray-100 font-medium" : ""
-                  }`}
+                  className={`flex justify-between items-center w-full bg-white px-3 py-2 text-sm text-left rounded hover:bg-gray-100 ${value === status.label ? "bg-gray-100 font-medium" : ""
+                    }`}
                 >
                   <div className="flex items-center gap-2">
                     {status.icon}

@@ -59,12 +59,12 @@ const NewProjectForm = ({ onSave, onClose }) => {
         className="bg-white shadow-lg rounded-md w-full max-w-4xl p-6 space-y-4 overflow-y-auto max-h-[90vh]"
       >
         {/* Header */}
-        <div className="flex justify-between items-center">
-          <div className="text-sm text-gray-500">STU &rsaquo; New project</div>
+        <div className="flex justify-between items-center font-semibold text-gray-800">
+          <div className="text-sm text-gray-500"><span className="border rounded-md px-1">STU</span> &rsaquo; New project</div>
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-500 hover:text-black text-xl"
+            className="text-gray-500 hover:text-black text-xl focus:outline-none border-none"
           >
             &times;
           </button>
@@ -77,7 +77,7 @@ const NewProjectForm = ({ onSave, onClose }) => {
           value={project.name}
           onChange={handleChange}
           placeholder="Project name"
-          className="w-full bg-white text-2xl font-semibold focus:outline-none placeholder-gray-400"
+          className="w-full text-2xl font-semibold focus:outline-none placeholder-gray-400"
           required
         />
 
@@ -88,7 +88,7 @@ const NewProjectForm = ({ onSave, onClose }) => {
           value={project.summary}
           onChange={handleChange}
           placeholder="Add a short summary..."
-          className="w-full bg-white text-gray-500 focus:outline-none border-none placeholder-gray-400"
+          className="w-full text-gray-500 focus:outline-none border-none placeholder-gray-400"
         />
 
         {/* Tag Buttons / Pills */}
@@ -120,7 +120,7 @@ const NewProjectForm = ({ onSave, onClose }) => {
           />
 
           {/* Assignee (Fixed pill) */}
-          <div className="px-3 py-1 rounded-full border text-sm bg-gray-100 flex items-center gap-2">
+          <div className="px-3 py-1 rounded-lg border-gray-300 border text-sm bg-gray-100 flex items-center gap-2">
             <img
               src="https://i.pravatar.cc/24?u=romi"
               alt="user"
@@ -185,11 +185,11 @@ const NewProjectForm = ({ onSave, onClose }) => {
           onChange={handleChange}
           rows="10"
           placeholder="Write a description, a project brief, or collect ideas..."
-          className="w-full bg-white border border-gray-200 rounded text-sm focus:outline-none border-none"
+          className="w-full border border-gray-200 rounded text-sm focus:outline-none border-none"
         />
 
         {/* Milestones header */}
-        <div className="flex justify-between items-center bg-gray-100 px-3 py-1.5 rounded">
+        <div className="flex justify-between items-center bg-gray-100 px-3 py-1.5 rounded-md border-2 border-gray-200">
           <div className="text-sm text-gray-700 font-medium">Milestones</div>
           <button
             type="button"
