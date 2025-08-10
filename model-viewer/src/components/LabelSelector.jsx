@@ -23,7 +23,12 @@ const LabelSelector = React.forwardRef(({ selected = [], onChange, open, setOpen
       <button
         type="button"
         onClick={() => setOpen(open ? null : "labels")}
-        className="inline-flex items-center px-3 py-1 border rounded-full text-sm bg-white hover:bg-gray-50 shadow-sm gap-2"
+        className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-sm shadow-sm
+    border border-gray-300
+    ${open ? "bg-gray-200" : "hover:bg-gray-50"}
+    focus:outline-none focus:ring-0 focus:border-gray-300
+    active:outline-none active:ring-0 active:border-gray-300
+    hover:border-gray-300`}
       >
         <Tag className="w-4 h-4" />
         Labels

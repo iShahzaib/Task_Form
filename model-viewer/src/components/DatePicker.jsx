@@ -167,10 +167,9 @@ const DatePicker = React.forwardRef(
                   disabled={!isCurrentMonth}
                   className={`bg-white w-9 h-9 rounded-full inline-flex items-center justify-center
                     ${isCurrentMonth ? "text-gray-800" : "text-gray-400"}
-                    ${
-                      isSelected
-                        ? "bg-indigo-100 text-indigo-700 font-semibold"
-                        : ""
+                    ${isSelected
+                      ? "bg-indigo-100 text-indigo-700 font-semibold"
+                      : ""
                     }
                     ${isToday ? "ring-1 ring-blue-300" : ""}
                     hover:bg-gray-100`}
@@ -214,11 +213,10 @@ const DatePicker = React.forwardRef(
                 key={m}
                 type="button"
                 onClick={() => selectMonth(i)}
-                className={`px-2 py-2 text-sm rounded border ${
-                  current.month() === i
+                className={`px-2 py-2 text-sm rounded border ${current.month() === i
                     ? "bg-indigo-100 text-indigo-700"
                     : "bg-white"
-                }`}
+                  }`}
               >
                 {m.slice(0, 3)}
               </button>
@@ -257,11 +255,10 @@ const DatePicker = React.forwardRef(
                 key={q}
                 type="button"
                 onClick={() => selectQuarter(q)}
-                className={`px-3 py-2 rounded border text-sm ${
-                  Math.floor(current.month() / 3) + 1 === q
+                className={`px-3 py-2 rounded border text-sm ${Math.floor(current.month() / 3) + 1 === q
                     ? "bg-indigo-100 text-indigo-700"
                     : "bg-white"
-                }`}
+                  }`}
               >
                 Q{q}
               </button>
@@ -300,12 +297,11 @@ const DatePicker = React.forwardRef(
                 key={h}
                 type="button"
                 onClick={() => selectHalf(h)}
-                className={`px-4 py-2 rounded border text-sm ${
-                  (h === 1 && current.month() < 6) ||
-                  (h === 2 && current.month() >= 6)
+                className={`px-4 py-2 rounded border text-sm ${(h === 1 && current.month() < 6) ||
+                    (h === 2 && current.month() >= 6)
                     ? "bg-indigo-100 text-indigo-700"
                     : "bg-white"
-                }`}
+                  }`}
               >
                 H{h}
               </button>
@@ -346,11 +342,10 @@ const DatePicker = React.forwardRef(
                 key={y}
                 type="button"
                 onClick={() => selectYear(y)}
-                className={`px-2 py-2 rounded border text-sm ${
-                  y === currentYear
+                className={`px-2 py-2 rounded border text-sm ${y === currentYear
                     ? "bg-indigo-100 text-indigo-700"
                     : "bg-white"
-                }`}
+                  }`}
               >
                 {y}
               </button>
@@ -371,7 +366,12 @@ const DatePicker = React.forwardRef(
         <button
           type="button"
           onClick={() => setOpen(open ? null : label.toLowerCase())}
-          className="inline-flex items-center gap-3 px-3 py-1 border rounded-full text-sm bg-white hover:bg-gray-50 shadow-sm"
+          className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-sm shadow-sm
+    border border-gray-300
+    ${open ? "bg-gray-200" : "hover:bg-gray-50"}
+    focus:outline-none focus:ring-0 focus:border-gray-300
+    active:outline-none active:ring-0 active:border-gray-300
+    hover:border-gray-300`}
         >
           {Icon && <Icon className="w-4 h-4" />}
           <span className="whitespace-nowrap">{label}</span>
@@ -395,9 +395,8 @@ const DatePicker = React.forwardRef(
             <input
               readOnly
               type="text"
-              className={`w-full bg-white border rounded p-1 text-sm mb-3 ${
-                selectedDate ? "text-gray-900" : "text-gray-400"
-              }`}
+              className={`w-full bg-white border rounded p-1 text-sm mb-3 ${selectedDate ? "text-gray-900" : "text-gray-400"
+                }`}
               placeholder="Try: May 2026, Q4, 20/05/2026"
               value={
                 selectedDate ? dayjs(selectedDate).format("DD/MM/YYYY") : ""
@@ -411,11 +410,10 @@ const DatePicker = React.forwardRef(
                   key={v}
                   type="button"
                   onClick={() => setView(v)}
-                  className={`px-2 py-0.5 border rounded text-xs ${
-                    view === v
+                  className={`px-2 py-0.5 border rounded text-xs ${view === v
                       ? "bg-gray-200 border-gray-400 font-medium"
                       : "bg-white"
-                  }`}
+                    }`}
                 >
                   {v}
                 </button>

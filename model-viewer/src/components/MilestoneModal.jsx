@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { CalendarPlus } from "lucide-react";
 import { format } from "date-fns";
 
-function MilestoneModal({ onClose, onAdd }) {
+const MilestoneModal = ({ onClose, onAdd }) => {
   const modalRef = useRef(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const [milestone, setMilestone] = useState({
@@ -17,9 +17,8 @@ function MilestoneModal({ onClose, onAdd }) {
   };
 
   const handleDateChange = (e) => {
-    const newDate = new Date(e.target.value);
+    const newDate = e.target.value ? new Date(e.target.value) : null;
     setMilestone((prev) => ({ ...prev, targetDate: newDate }));
-    setShowCalendar(false);
   };
 
   const handleSubmit = (e) => {
@@ -45,7 +44,7 @@ function MilestoneModal({ onClose, onAdd }) {
     <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
       <div
         ref={modalRef}
-        className="bg-white rounded-md w-full max-w-3xl border shadow-lg"
+        className="bg-gray-200 rounded-xl w-full max-w-3xl border shadow-lg"
       >
         {/* Header */}
         <div className="px-5 py-4 border-b text-lg font-medium text-gray-800">
@@ -66,7 +65,7 @@ function MilestoneModal({ onClose, onAdd }) {
                 value={milestone.name}
                 onChange={handleChange}
                 placeholder="Milestone name"
-                className="w-full bg-white text-gray-900 text-base font-medium placeholder-gray-400 focus:outline-none"
+                className="w-full bg-gray-200 text-gray-900 text-base font-medium placeholder-gray-400 focus:outline-none"
                 required
               />
 
@@ -76,26 +75,50 @@ function MilestoneModal({ onClose, onAdd }) {
                 onChange={handleChange}
                 placeholder="Add a description..."
                 rows={2}
-                className="w-full text-sm text-gray-600 placeholder-gray-400 bg-white focus:outline-none"
+                className="w-full text-sm text-gray-600 placeholder-gray-400 bg-gray-200 focus:outline-none"
               />
             </div>
 
             {/* Calendar + Input inline */}
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                title="Add target date"
-                onClick={() => setShowCalendar(!showCalendar)}
-              >
-                <CalendarPlus className="w-5 h-5 text-gray-600 hover:text-black" />
-              </button>
-              {showCalendar && (
-                <input
-                  type="date"
-                  value={format(milestone.targetDate, "yyyy-MM-dd")}
-                  onChange={handleDateChange}
-                  className="bg-white border rounded px-2 py-1 text-sm"
-                />
+            <div
+              className="flex items-center gap-2"
+              onClick={(e) => e.stopPropagation()} // Prevent modal close
+            >
+              {!showCalendar ? (
+                <button
+                  type="button"
+                  title="Add target date"
+                  className="p-0 m-0 bg-transparent border-none outline-none focus:outline-none focus:ring-0 active:outline-none active:ring-0 active:border-none"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowCalendar(true);
+                  }}
+                >
+                  <CalendarPlus className="w-5 h-5 text-gray-600 hover:text-black" />
+                </button>
+              ) : (
+                <>
+                  <input
+                    type="date"
+                    placeholder="Target date"
+                    value={format(milestone.targetDate, "yyyy-MM-dd")}
+                    onChange={(e) => {
+                      const newDate = new Date(e.target.value);
+                      setMilestone((prev) => ({ ...prev, targetDate: newDate }));
+                    }}
+                    className="bg-gray-200 border rounded px-2 text-sm"
+                  />
+                  <button
+                    type="button"
+                    className="p-0 m-0 text-xs bg-transparent border-none outline-none focus:outline-none focus:ring-0 active:outline-none active:ring-0 active:border-none"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowCalendar(false);
+                    }}
+                  >
+                    ❌
+                  </button>
+                </>
               )}
             </div>
           </div>
@@ -120,6 +143,6 @@ function MilestoneModal({ onClose, onAdd }) {
       </div>
     </div>
   );
-}
+};
 
 export default MilestoneModal;
