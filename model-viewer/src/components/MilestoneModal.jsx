@@ -47,7 +47,7 @@ const MilestoneModal = ({ onClose, onAdd }) => {
         className="bg-gray-200 rounded-xl w-full max-w-3xl border shadow-lg"
       >
         {/* Header */}
-        <div className="px-5 py-4 border-b text-lg font-medium text-gray-800">
+        <div className="px-5 py-4 border-b text-lg font-medium text-gray-800 text-left">
           Create milestone
         </div>
 
@@ -106,7 +106,7 @@ const MilestoneModal = ({ onClose, onAdd }) => {
                       const newDate = new Date(e.target.value);
                       setMilestone((prev) => ({ ...prev, targetDate: newDate }));
                     }}
-                    className="bg-gray-200 border rounded px-2 text-sm"
+                    className="bg-gray-200 px-2 text-sm"
                   />
                   <button
                     type="button"
